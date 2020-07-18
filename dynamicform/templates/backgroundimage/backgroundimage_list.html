@@ -1,0 +1,111 @@
+{% extends "layout/app.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+            <div class="kt-portlet kt-portlet--height-fluid kt-portlet--mobile ">
+                <div class="kt-portlet__head kt-portlet__head--lg kt-portlet__head--noborder kt-portlet__head--break-sm">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Background Image List
+                        </h3>
+                    </div>
+                    <div class="kt-portlet__head-toolbar">
+                        <div class="dropdown dropdown-inline">
+                            <a href='{% url "dynamicform:backgroundimage:backgroundimage_create" formmasterid %}' class="btn btn-primary">
+                                Add New
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="kt-portlet__body kt-portlet__body">
+
+                    <table class="table">
+                        <tr>
+                            <th>Title</th>
+                            <th>Image URL</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
+                            <th>Action</th>
+                        </tr>
+
+                        {% for backgroundimage in list %}
+                            <tr>
+                                <td>{{ backgroundimage.image_title }}</td>
+                                <td><a href="{ backgroundimage.imageUrl }" target="_blank">{{ backgroundimage.imageUrl}}</td></td>
+                                <td>{{ backgroundimage.created_at }}</td>
+                                <td>{{ backgroundimage.updated_at }}</td>
+                                <td>&nbsp;
+                                    <a onclick="backgroundimage_delete('{% url 'dynamicform:backgroundimage:backgroundimage_delete' %}', {{ backgroundimage.id }})"
+                                       class="btn btn-sm btn-clean btn-icon btn-icon-md"><i
+                                    class="la la-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <center>
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a class="pagination-action"
+                   href="?page=1 {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+                    <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                </a>
+                <a class="pagination-action"
+                   href="?page={{ page_obj.previous_page_number }} {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+            <span class="pagination-current">{{ page_obj.number }}</span>
+            <span class="pagination-of"></span>
+            <span class="pagination-total">{{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a class="pagination-action"
+                   href="?page={{ page_obj.next_page_number }} {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+                <a class="pagination-action"
+                   href="?page={{ page_obj.paginator.num_pages }} {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+        </div>
+    </center>
+{% endblock %}
+{% block java_script %}
+
+    <script>
+        function backgroundimage_delete(url, backgroundimageid) {
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+
+                if (result.value) {
+                    $.post(url,
+                        {
+                            backgroundimageid: backgroundimageid,
+                            'csrfmiddlewaretoken': getCookie('csrftoken')
+                        },
+                        function (data, status) {
+
+                            window.location.reload();
+
+                        });
+                } else {
+                    alert('not deleted');
+                }
+            });
+        }
+    </script>
+{% endblock %}
+

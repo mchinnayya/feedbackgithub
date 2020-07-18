@@ -1,0 +1,109 @@
+{% extends "layout/app.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+        <div class="kt-portlet kt-portlet--height-fluid">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <span class="kt-portlet__head-icon"><i class="kt-font-brand la la-folder"></i></span>
+                    <h3 class="kt-portlet__head-title">Dynamic Form Field </h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="kt-portlet__head-wrapper">
+                        <button type="button" class="btn btn-primary"
+                                onclick="location.href ='{% url "dynamicform:dynamicform_view" formmasterid %}';">
+                        <i class=" fa fa-arrow-left " aria-hidden="true"></i>
+                        &nbsp;&nbsp;back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="kt-portlet__body kt-portlet__body">
+            <form action="./{{ formmasterid }} {{formfieldid}}" method="post" enctype="multipart/form-data" autocomplete="off"
+                  novalidate>
+                {% csrf_token %}
+                <input type="hidden" name="fielfMasterID" value="{{ formmasterid }}"/>
+                <div class="row">
+                    <div class="col-12">
+                        {{ fieldform.field_title|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ fieldform.field_type|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row" id="option_value_div" style="display: none">
+                    <div class="col-12">
+                        {{ dropdownform.dropdown_label|as_crispy_field }}
+                    </div>
+                    <br>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ fieldform.field_hidden|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        {{ fieldform.field_description|as_crispy_field }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="reset" value="Clear" class="btn btn-danger pull-right"/>
+                        <input type="submit" value="Save" class="btn btn-primary pull-right"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    </div>
+
+{% endblock %}
+{% block java_script %}
+    <script>
+    function onfieldtypeSelected(value) {
+
+       if(value==='113'||value==='114'||value==='115'||value==='116'||value==='117') {
+           $('#option_value_div').show();
+       }else{
+            $('#option_value_div').hide();
+       }
+
+    }
+    </script>
+    <script>
+    var btn=document.querySelector("#btn");
+    btn.onclick=function () {
+        var div =document.createElement("div");
+        div.innerHTML=generateit();
+        document.getElementById("option_value_div").appendChild(div);
+    }
+    function generateit() {
+
+        return "<button type='button' onclick='removeit(this)'>Remove</button>";
+
+    }
+    function removeit(div) {
+        document.getElementById("option_value_div").removeChild(btn.parentNode);
+
+    }
+    </script>
+
+
+<!--    <script>-->
+<!--    i=0;-->
+<!--    function display()-->
+<!--        a=document.getElementById("option_value_div");-->
+<!--        b=document.createElement("input");-->
+<!--        b.setAttribute("type","text");-->
+<!--        b.setAttribute("id","t"+(i++));-->
+<!--        a.appendChild(b);#}-->
+
+<!--    </script>-->
+
+{% endblock %}

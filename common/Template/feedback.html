@@ -1,0 +1,62 @@
+{% extends "layout/app.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="form-group">
+<label>{{formfield.field_title}}</label>
+<table>
+    <tr>
+        <td align="center">Very Poor</td>
+        <td align="center">Poor</td>
+        <td align="center">Average</td>
+        <td align="center">Good</td>
+        <td align="center">Excellent</td>
+    </tr>
+    <tr>
+        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>
+        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>
+        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>
+        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>
+        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>
+    </tr>
+</table>
+</div>
+
+<div class="form-group">
+<label>{{formfield.field_title}}</label>
+<table>
+    <tr>
+        <td align="center">Very Poor</td>
+        <td align="center">Poor</td>
+        <td align="center">Average</td>
+        <td align="center">Good</td>
+        <td align="center">Excellent</td>
+    </tr>
+    <tr>
+        <td><img src="static/images/1.png" width="160px" style="cursor:pointer"></td>
+        <td><img src="static/images/2.png" width="160px" style="cursor:pointer"></td>
+        <td><img src="static/images/3.png" width="160px" style="cursor:pointer"></td>
+        <td><img src="static/images/4.png" width="160px" style="cursor:pointer"></td>
+        <td><img src="static/images/5.png" width="160px" style="cursor:pointer"></td>
+    </tr>
+</table>
+</div>
+
+<div class="form-group">
+<label>{{formfield.field_title}}</label>
+<table>
+    <tr>
+        <td align="center">Very Poor</td>
+        <td align="center">Poor</td>
+        <td align="center">Average</td>
+        <td align="center">Good</td>
+        <td align="center">Excellent</td>
+    </tr>
+    <tr>
+        <td><div boader="1">1</div></td>
+        <td><div>2</div></td>
+        <td><div>3</div></td>
+        <td><div>4</div></td>
+    </tr>
+</table>
+</div>
+{% endblock %}

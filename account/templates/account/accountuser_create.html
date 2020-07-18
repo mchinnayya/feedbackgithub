@@ -1,0 +1,76 @@
+{% extends 'layout/app.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+    <div class="kt-portlet kt-portlet--height-fluid">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <span class="kt-portlet__head-icon"><i class="kt-font-brand fa fa-user-plus"></i></span>
+                <h3 class="kt-portlet__head-title">New User</h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+                <div class="kt-portlet__head-wrapper">
+                    <button type="button" class="btn btn-primary"
+                            onclick="window.location.href ='{% url 'account:accountuser_list' %}';">
+                        <i class=" fa fa-arrow-left " aria-hidden="true"></i>
+                        &nbsp;&nbsp;back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body kt-portlet__body">
+        <form method="post" autocomplete="off" class="kt-form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-6">
+                    {{ user_form.username|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ user_form.first_name|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ user_form.last_name|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ user_form.email|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ user_form.password|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ account_form.mobile|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ account_form.gender|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ account_form.role|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ account_form.start_date|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ account_form.end_date|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ account_form.organization|as_crispy_field }}
+                </div>
+            </div>
+            <br>
+            <input type="reset" class="btn btn-danger pull-right" value="Clear">&nbsp;&nbsp;
+            <input type="submit" class="btn btn-primary pull-right" value="Register">
+        </form>
+    </div>
+</div>
+{% endblock %}

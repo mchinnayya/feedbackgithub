@@ -1,0 +1,161 @@
+{% extends "layout/app.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+    <div class="kt-portlet kt-portlet--height-fluid">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <span class="kt-portlet__head-icon"><i class="kt-font-brand fa fa-street-view"></i></span>
+                <h3 class="kt-portlet__head-title">View Form Master</h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+                <div class="kt-portlet__head-wrapper">
+                    <button type="button" class="btn btn-primary"
+                            onclick="window.location.href ='{% url 'dynamicform:dynamicform_list' %}';">
+                        <i class=" fa fa-arrow-left " aria-hidden="true"></i>
+                        &nbsp;&nbsp;back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <div class="row">
+            <div class="offset-4 col-md-4">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <td>Title</td>
+                            <td>{{ dynamicform.title }}</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>{{ dynamicform.description }}</td>
+                        </tr>
+                        <tr>
+                            <td>Created at</td>
+                            <td>{{ dynamicform.created_at }}</td>
+                        </tr>
+                        <tr>
+                            <td>Updated at</td>
+                            <td>{{ dynamicform.updated_at }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+                <div class="kt-portlet kt-portlet--height-fluid kt-portlet--mobile ">
+                    <div class="kt-portlet__head kt-portlet__head--lg kt-portlet__head--noborder kt-portlet__head--break-sm">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Dynamic Form Field
+                            </h3>
+                        </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="dropdown dropdown-inline">
+                                <a href="{% url 'dynamicform:formfield:formfield_create' dynamicform.id  %}"
+                                   class="btn btn-primary">
+                                    Add New
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__body kt-portlet__body">
+
+                        <table class="table">
+                            <tr>
+                                <th>Field Title</th>
+                                <th>Field Type</th>
+                                <th>Field Hidden</th>
+                                <th>Field Description</th>
+                                <th colspan="2">Action</th>
+                            </tr>
+
+                            {% for formfield in fieldforms %}
+                            <tr>
+                                <td>{{ formfield.field_title }}</td>
+                                <td>{% if formfield.field_type == 113 %}
+                                    Star
+                                    {% elif formfield.field_type == 114 %}
+                                    Emoji
+                                    {% elif formfield.field_type == 115 %}
+                                    Slider
+                                    {% elif formfield.field_type == 116 %}
+                                    Multi-Choice-Single-Select()
+                                    {% elif formfield.field_type == 117 %}
+                                    Multi-Choice-Single-Select(DropDown list)
+                                    {% else %}
+                                    Text-Box
+
+
+                                    {% endif %}
+                                </td>
+                                <td>{% if formfield.field_hidden == 119 %}
+                                    NO
+                                    {% else %}
+                                    YES
+                                    {% endif %}
+                                </td>
+                                <td>{{ formfield.field_description }}</td>
+
+                                <td data-field="Actions" data-autohide-disabled="false" class="kt-datatable__cell"><span
+                                        style="overflow: visible; position: relative; width: 110px;">
+                            <a href="{% url 'dynamicform:formfield:formfield_view' formfield.id %}" title="View"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-eye"></i></a>&nbsp;
+                            <a href="{% url 'dynamicform:formfield:formfield_edit' formfield.id %}" title="Edit"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-edit"></i></a>&nbsp;
+                            <a onclick="formfield_delete('{% url 'dynamicform:formfield:formfield_delete' %}',
+                                    {{ formfield.id }})"
+                               title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"><i
+                                    class="la la-trash"></i> </a>
+                        </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endblock %}
+        {% block java_script %}
+
+        <script>
+        function formfield_delete(url, formfieldid) {
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+
+                if (result.value) {
+                    $.post(url,
+                        {
+                            formfieldid: formfieldid,
+                            'csrfmiddlewaretoken': getCookie('csrftoken')
+                        },
+                        function (data, status) {
+
+                            window.location.reload();
+
+                        });
+                } else {
+                    alert('not deleted');
+                }
+            });
+        }
+
+
+
+        </script>
+        {% endblock %}

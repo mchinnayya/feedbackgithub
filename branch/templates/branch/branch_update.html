@@ -1,0 +1,62 @@
+{% extends 'layout/app.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+    <div class="kt-portlet kt-portlet--height-fluid">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <span class="kt-portlet__head-icon"><i class="kt-font-brand fa fa-home"></i></span>
+                <h3 class="kt-portlet__head-title">Branch Update</h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+                <div class="kt-portlet__head-wrapper">
+                    <button type="button" class="btn btn-primary"
+                            onclick="window.location.href ='{% url 'branch:branch_list' %}';">
+                        <i class=" fa fa-arrow-left " aria-hidden="true"></i>
+                        &nbsp;&nbsp;back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body kt-portlet__body">
+        <form method="post" action="" autocomplete="off">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-6">
+                    {{ form.branch_name|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ form.parent_id|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ form.type|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ form.city|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ form.state|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ form.country|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    {{ form.branch_code|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                    {{ form.organization|as_crispy_field }}
+                </div>
+            </div>
+            <br>
+            <input type="submit" class="btn btn-primary pull-right" value="Update"/>
+        </form>
+    </div>
+</div>
+{% endblock %}

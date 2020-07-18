@@ -1,0 +1,45 @@
+<table class="table" id="dynamicform_table">
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Created at</th>
+        <th>Updated at</th>
+        <th colspan="7">Action</th>
+    </tr>
+
+    {% for count in name %}
+    <tr>
+        <td>{{ count.title }}</td>
+        <td>{{ count.description }}</td>
+        <td>{{ count.created_at }}</td>
+        <td>{{ count.updated_at }}</td>
+        <td data-field="Actions" data-autohide-disabled="false" class="kt-datatable__cell"><span
+                style="overflow: visible; position: relative; width: 110px;"><a
+                href="{% url 'dynamicform:dynamicform_view' count.id %}" title="View"
+                class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-eye"></i></a>&nbsp;&nbsp;
+                            <a href="{% url 'dynamicform:dynamicform_edit' count.id %}" title="Edit"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-edit"></i></a>&nbsp;&nbsp;
+                            <a onclick="dynamicform_delete('{% url 'dynamicform:dynamicform_delete' %}', {{ count.id }})"
+                               title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-trash"></i></a>&nbsp;
+                            <a href='{% url "dynamicform:backgroundimage:backgroundimage_list" count.id %}'
+                               title="Add Background Image" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-image"></i></a>&nbsp;
+                            <a href='{% url "dynamicform:layout:layout_create" count.id %}'
+                               title="Add Slider" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="fal fa-pen-alt"></i></a>&nbsp;
+                            <a href="" title="Assign To User" data-toggle="modal"
+                               data-target="#userAssignModal" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-user-plus"></i></a>&nbsp;
+                            <a href='{% url "dynamicform:feedback" count.id %}' title="URL" target="_blank"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-undo"></i></a>&nbsp;
+                            <a href='{% url "dynamicform:report" count.id  %}' title="Feedback Report"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-file-alt"></i></a></span>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

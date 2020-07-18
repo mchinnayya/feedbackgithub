@@ -1,0 +1,159 @@
+{% extends "layout/app.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+        <div class="kt-portlet kt-portlet--height-fluid kt-portlet--mobile ">
+            <div class="kt-portlet__head kt-portlet__head--lg kt-portlet__head--noborder kt-portlet__head--break-sm">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        All Branch
+                    </h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="dropdown dropdown-inline">
+                        <a href="{% url 'branch:branch_create' %}" class="btn btn-primary">
+                            Add New
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i
+                        class="flaticon2-search-1"></i></span></div>
+                <form>
+
+                    <input type="text" class="form-control kt-quick-search__input" placeholder="Search..." name="q"
+                           id="branch_search">
+                </form>
+                <div class="input-group-append"><span class="input-group-text"><i
+                        class="la la-close kt-quick-search__close" style="display: none;"></i></span></div>
+            </div>
+            <div class="kt-portlet__body kt-portlet__body">
+
+                <table class="table" id="branch_table">
+                    <tr>
+                        <th>Organization</th>
+                        <th>Created By</th>
+                        <th>Branch Name</th>
+                        <th>Parent Id</th>
+                        <th>Type</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Country</th>
+                        <th>Branch Code</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+
+                    {% for branch in branches %}
+                    <tr>
+                        <td>{{ branch.organization }}</td>
+                        <td>{{ branch.created_by }}</td>
+                        <td>{{ branch.branch_name }}</td>
+                        <td>{{ branch.parent_id }}</td>
+                        <td>{% if branch.type == 40 %}
+                            Department
+                            {% elif branch.type == 42 %}
+                            Division
+                            {% else %}
+                            Sub Division
+                            {% endif %}
+                        </td>
+                        <td>{{ branch.city }}</td>
+                        <td>{{ branch.state }}</td>
+                        <td>{{ branch.country}}</td>
+                        <td>{{ branch.branch_code}}</td>
+                        <td data-field="Actions" data-autohide-disabled="false" class="kt-datatable__cell"><span
+                                style="overflow: visible; position: relative; width: 110px;">
+                            <a href="{% url 'branch:branch_view' branch.id %}" title="View"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-eye"></i></a>&nbsp;
+                            <a href="{% url 'branch:branch_edit' branch.id %}" title="Edit"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-edit"></i></a>&nbsp;
+                            <a onclick="branch_delete('{% url 'branch:branch_delete' %}', {{ branch.id }})"
+                               title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"><i
+                                    class="la la-trash"></i> </a>
+                        </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+
+<center>
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a class="pagination-action"
+           href="?page=1 {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+            <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+        </a>
+        <a class="pagination-action"
+           href="?page={{ page_obj.previous_page_number }} {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+        <span class="pagination-current">{{ page_obj.number }}</span>
+        <span class="pagination-of"></span>
+        <span class="pagination-total">{{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a class="pagination-action"
+           href="?page={{ page_obj.next_page_number }} {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </a>
+        <a class="pagination-action"
+           href="?page={{ page_obj.paginator.num_pages }} {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+    </div>
+</center>
+{% endblock %}
+{% block java_script %}
+
+<script>
+        function branch_delete(url, branchid) {
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+
+                if (result.value) {
+                    $.post(url,
+                        {
+                            branchid:branchid,
+                            'csrfmiddlewaretoken': getCookie('csrftoken')
+                        },
+                        function (data, status) {
+
+                            window.location.reload();
+
+                        });
+                } else {
+                    alert('not deleted');
+                }
+            });
+        }
+
+</script>
+<script>
+         $(function () {
+            $("#branch_search").keyup(function(event){
+              let search_value = $("#branch_search").val();
+              $.get("/branch/search/?q="+search_value,
+              function(data, status){
+               $('#branch_table').html(data);
+              });
+            });
+         });
+
+</script>
+{% endblock %}

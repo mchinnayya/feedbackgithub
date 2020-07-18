@@ -1,0 +1,178 @@
+{% extends "layout/app.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+        <div class="kt-portlet kt-portlet--height-fluid kt-portlet--mobile ">
+            <div class="kt-portlet__head kt-portlet__head--lg kt-portlet__head--noborder kt-portlet__head--break-sm">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">
+                        Dynamic Form Master
+                    </h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="dropdown dropdown-inline">
+                        <a href="{% url 'dynamicform:dynamicform_create' %}" class="btn btn-primary">
+                            Add New
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i
+                        class="flaticon2-search-1"></i></span></div>
+                <form>
+                    <input type="text" class="form-control kt-quick-search__input" placeholder="Search..." name="q"
+                           id="dynamicform_search">
+                </form>
+                <div class="input-group-append"><span class="input-group-text"><i
+                        class="la la-close kt-quick-search__close" style="display: none;"></i></span></div>
+            </div>
+            <div class="kt-portlet__body kt-portlet__body">
+
+                <table class="table" id="dynamicform_table">
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Created at</th>
+                        <th>Updated at</th>
+                        <th colspan="7">Action</th>
+                    </tr>
+
+                    {% for dynamicform in dynamicforms %}
+                    <tr>
+                        <td>{{ dynamicform.title }}</td>
+                        <td>{{ dynamicform.description }}</td>
+                        <td>{{ dynamicform.created_at }}</td>
+                        <td>{{ dynamicform.updated_at }}</td>
+
+                        <td data-field="Actions" data-autohide-disabled="false" class="kt-datatable__cell"><span
+                                style="overflow: visible; position: relative; width: 110px;"><a
+                                href="{% url 'dynamicform:dynamicform_view' dynamicform.id %}" title="View"class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-eye"></i></a>&nbsp;&nbsp;
+                            <a href="{% url 'dynamicform:dynamicform_edit' dynamicform.id %}" title="Edit"class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-edit"></i></a>&nbsp;&nbsp;
+                            <a onclick="dynamicform_delete('{% url 'dynamicform:dynamicform_delete' %}', {{ dynamicform.id }})"
+                               title="Delete"class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-trash"></i></a>&nbsp;
+                            <a href='{% url "dynamicform:backgroundimage:backgroundimage_list" dynamicform.id %}'
+                                    title="Add Background Image"class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-image"></i></a>&nbsp;
+                            <a href='{% url "dynamicform:layout:layout_create" dynamicform.id %}'
+                                    title="Add Slider"class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="fal fa-pen-alt"></i></a>&nbsp;
+                            <a href="" title="Assign To User" data-toggle="modal"
+                               data-target="#userAssignModal"class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-user-plus"></i></a>&nbsp;
+                            <a href='{% url "dynamicform:feedback" dynamicform.id %}' title="URL" target="_blank"class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-undo"></i></a>&nbsp;
+                            <a href='{% url "dynamicform:report" dynamicform.id  %}' title="Feedback Report"class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-file-alt"></i></a></span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="userAssignModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Assign To User</h4>
+                <button type="button" class="close" data-dismiss="modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="post" autocomplete="off">
+                    {% csrf_token %}
+                    {{ assignform.as_p}}
+                <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="submit" class="btn btn-success pull-right" data-dismiss="modal">
+                    Save
+                </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<center>
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a class="pagination-action"
+           href="?page=1 {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+            <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+        </a>
+        <a class="pagination-action"
+           href="?page={{ page_obj.previous_page_number }} {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+        <span class="pagination-current">{{ page_obj.number }}</span>
+        <span class="pagination-of"></span>
+        <span class="pagination-total">{{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a class="pagination-action"
+           href="?page={{ page_obj.next_page_number }} {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </a>
+        <a class="pagination-action"
+           href="?page={{ page_obj.paginator.num_pages }} {% if request.GET.q %} &q={{ request.GET.q }} {% endif %}">
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+        </a>
+        {% endif %}
+    </div>
+</center>
+{% endblock %}
+{% block java_script %}
+
+<script>
+        function dynamicform_delete(url, dynamicformmasterid) {
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+
+                if (result.value) {
+                    $.post(url,
+                        {
+                            dynamicformmasterid: dynamicformmasterid,
+                            'csrfmiddlewaretoken': getCookie('csrftoken')
+                        },
+                        function (data, status) {
+
+                            window.location.reload();
+
+                        });
+                } else {
+                    alert('not deleted');
+                }
+            });
+        }
+
+
+</script>
+
+    <script>
+         $(function () {
+            $("#dynamicform_search").keyup(function(event){
+              let search_value = $("#dynamicform_search").val();
+              $.get("search/?q="+search_value,
+              function(data, status){
+               $('#dynamicform_table').html(data);
+              });
+            });
+         });
+    </script>
+{% endblock %}
+

@@ -1,0 +1,146 @@
+{% extends "layout/app.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<!--<div class="form-group">-->
+<!--<label>{{formfield.field_title}}</label>-->
+<!--<table>-->
+<!--    <tr>-->
+<!--        <td align="center">Very Poor</td>-->
+<!--        <td align="center">Poor</td>-->
+<!--        <td align="center">Average</td>-->
+<!--        <td align="center">Good</td>-->
+<!--        <td align="center">Excellent</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>-->
+<!--        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>-->
+<!--        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>-->
+<!--        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>-->
+<!--        <td><img src="static/images/star.png" width="160px" style="cursor:pointer"></td>-->
+<!--    </tr>-->
+<!--</table>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--<label>{{formfield.field_title}}</label>-->
+<!--<table>-->
+<!--    <tr>-->
+<!--        <td align="center">Very Poor</td>-->
+<!--        <td align="center">Poor</td>-->
+<!--        <td align="center">Average</td>-->
+<!--        <td align="center">Good</td>-->
+<!--        <td align="center">Excellent</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td><img src="static/images/1.png" width="160px" style="cursor:pointer"></td>-->
+<!--        <td><img src="static/images/2.png" width="160px" style="cursor:pointer"></td>-->
+<!--        <td><img src="static/images/3.png" width="160px" style="cursor:pointer"></td>-->
+<!--        <td><img src="static/images/4.png" width="160px" style="cursor:pointer"></td>-->
+<!--        <td><img src="static/images/5.png" width="160px" style="cursor:pointer"></td>-->
+<!--    </tr>-->
+<!--</table>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--<label>{{formfield.field_title}}</label>-->
+<!--<table>-->
+<!--    <tr>-->
+<!--        <td align="center">Very Poor</td>-->
+<!--        <td align="center">Poor</td>-->
+<!--        <td align="center">Average</td>-->
+<!--        <td align="center">Good</td>-->
+<!--        <td align="center">Excellent</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td><div boader="1">1</div></td>-->
+<!--        <td><div>2</div></td>-->
+<!--        <td><div>3</div></td>-->
+<!--        <td><div>4</div></td>-->
+<!--    </tr>-->
+<!--</table>-->
+<!--</div>-->
+
+<div class="kt-portlet kt-portlet--mobile">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+            </span>
+            <h1 class="kt-portlet__head-title">
+                {{masterform.title}}&nbsp; Report
+            </h1>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+                <input placeholder="Start Date" class="form-control" type="text" onfocus="(this.type='date')"
+                       id="start date">&nbsp;
+                <input placeholder="End Date" class="form-control" type="text" onfocus="(this.type='date')"
+                       id="end date">&nbsp;&nbsp;
+                <button type="submit" class="btn btn-primary">Search</button>&nbsp;&nbsp;&nbsp;
+                <a href="./" class="btn btn-primary">Refresh</a>&nbsp;&nbsp;&nbsp;
+                <a href="{% url 'dynamicform:dynamicform_list' %}" class="btn btn-primary">Back&nbsp;</a>
+            </div>
+        </div>
+    </div>
+        <div class="kt-portlet__head kt-portlet__head--lg">
+            <div class="kt-portlet__head-label">
+                <span class="kt-portlet__head-icon">
+                </span>
+                {% csrf_token %}
+                            <table>
+                                <tr>
+                                <td>
+                              {{feedbackReport|safe}}
+                                </td>
+                                </tr>
+                            </table>
+            </div>
+        </div>
+    <!--    <div class="row">-->
+    <!--        <div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">-->
+    <!--            <div class="kt-portlet__body kt-portlet__body">-->
+    <!--               <center> <h3>Response</h3></center>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+<!--    {% for data in fieldform %}-->
+<!--    <div class="row">-->
+<!--        <div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">-->
+<!--            <div class="kt-portlet__body kt-portlet__body">-->
+<!--                <table class="table">-->
+<!--                    <tr>-->
+<!--                        <th>{{ data.field_title }}</th>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+
+<!--                        <th class="text-center" colspan="6">Response</th>-->
+
+<!--                    </tr>-->
+<!--&lt;!&ndash;                    <tr class="text-center">&ndash;&gt;-->
+<!--&lt;!&ndash;                        {%for response in total_response%}&ndash;&gt;-->
+
+<!--&lt;!&ndash;                        <th colspan="6">Response</th>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                        {%endfor%}&ndash;&gt;-->
+<!--&lt;!&ndash;                    </tr>&ndash;&gt;-->
+<!--                    <tr>-->
+<!--                        {% for value in dropdownlable%}-->
+<!--&lt;!&ndash;                            {% if data.field_type == 113 %}&ndash;&gt;-->
+<!--                            <th>{{value.dropdown_label}}<br><span><img src="{% static 'images/star.png' %}"-->
+<!--                                                                   style="width:50px;height:50px;"/></span><br></th>-->
+<!--&lt;!&ndash;                            {% elif data.field_type == 114 %}&ndash;&gt;-->
+<!--                            <th>{{value.dropdown_label}}-->
+
+
+<!--&lt;!&ndash;                        {%endif%}&ndash;&gt;-->
+<!--                        {%endfor%}-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    {%endfor%}-->
+</div>
+
+
+{% endblock %}

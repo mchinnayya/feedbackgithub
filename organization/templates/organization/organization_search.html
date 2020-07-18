@@ -1,0 +1,34 @@
+<table class="table" id="org_table">
+    <tr>
+        <th>Organization Name</th>
+        <th>Created By</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Country</th>
+        <th colspan="2">Action</th>
+    </tr>
+    <tbody id="table-body">
+    {% for count in name %}
+    <tr>
+        <td>{{ count.organization_name }}</td>
+        <td>{{ count.created_by }}</td>
+        <td>{{ count.city }}</td>
+        <td>{{ count.state }}</td>
+        <td>{{ count.country }}</td>
+        <td data-field="Actions" data-autohide-disabled="false" class="kt-datatable__cell"><span
+                style="overflow: visible; position: relative; width: 110px;">
+                            <a href="{% url 'organization:organization_view' count.id %}" title="View"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-eye"></i></a>&nbsp;
+                            <a href="{% url 'organization:organization_edit' count.id %}" title="Edit"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-edit"></i></a>&nbsp;
+                            <a onclick="organization_delete('{% url 'organization:organization_delete' %}', {{ count.id }})"
+                               title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"><i
+                                    class="la la-trash"></i> </a>
+                        </span>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

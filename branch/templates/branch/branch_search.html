@@ -1,0 +1,48 @@
+<table class="table" id="branch_table">
+    <tr>
+        <th>Organization</th>
+        <th>Created By</th>
+        <th>Branch Name</th>
+        <th>Parent Id</th>
+        <th>Type</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Country</th>
+        <th>Branch Code</th>
+        <th colspan="2">Action</th>
+    </tr>
+
+    {% for count in name %}
+    <tr>
+        <td>{{ count.organization }}</td>
+        <td>{{ count.created_by }}</td>
+        <td>{{ count.branch_name }}</td>
+        <td>{{ count.parent_id }}</td>
+        <td>{% if count.type == 40 %}
+            Department
+            {% elif count.type == 42 %}
+            Division
+            {% else %}
+            Sub Division
+            {% endif %}
+        </td>
+        <td>{{ count.city }}</td>
+        <td>{{ count.state }}</td>
+        <td>{{ count.country}}</td>
+        <td>{{ count.branch_code}}</td>
+        <td data-field="Actions" data-autohide-disabled="false" class="kt-datatable__cell"><span
+                style="overflow: visible; position: relative; width: 110px;">
+                            <a href="{% url 'branch:branch_view' count.id %}" title="View"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                            <i class="la la-eye"></i></a>&nbsp;
+                            <a href="{% url 'branch:branch_edit' count.id %}" title="Edit"
+                               class="btn btn-sm btn-clean btn-icon btn-icon-md">
+                                <i class="la la-edit"></i></a>&nbsp;
+                            <a onclick="organization_delete('{% url 'branch:branch_delete' %}', {{ count.id }})"
+                               title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md"><i
+                                    class="la la-trash"></i> </a>
+                        </span>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

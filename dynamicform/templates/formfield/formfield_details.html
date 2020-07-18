@@ -1,0 +1,38 @@
+{% extends "layout/app.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="col-xl-12 col-lg-12 order-lg-1 order-xl-1">
+    <div class="kt-portlet kt-portlet--height-fluid">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <span class="kt-portlet__head-icon"><i class="kt-font-brand fa fa-street-view"></i></span>
+                <h3 class="kt-portlet__head-title">View Dynamic Form Field</h3>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+    <div class="row">
+        <div class="offset-4 col-md-4">
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <td>Field Title</td>
+                        <td>{{ formfield.field_title }}</td>
+                    </tr>
+                    <tr>
+                        <td>Field Type</td>
+                        <td>{{ formfield.field_type }}</td>
+                    </tr>
+                    <tr>
+                        <td>Field Hidden</td>
+                        <td>{{ formfield.field_hidden }}</td>
+                    </tr>
+                    <tr>
+                        <td>Field Description</td>
+                        <td>{{ formfield.field_description }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
